@@ -52,11 +52,35 @@ class Graph extends Component {
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
+    const listOfNodes = this.state.nodes.map(x =>
+      <tr><td>{x.id}</td><td style={{color: 'red'}}>isa</td><td>{x.type}</td></tr>
+    )
+    const listOfEdges = this.state.edges.map(x =>
+      <tr><td>{x.from}</td><td>{x.type}</td><td>{x.to}</td></tr>
+    )
     return (
       <div className="grid-x">
         <div className="cell medium-4">
           <button className="button" onClick={this.addNode}>Add Node</button>
           <button className="button" onClick={this.addEdge}>Add Edge</button>
+          <div>
+            <div>
+              <h2>Nodes</h2>
+              <table>
+                <tbody>
+                  {listOfNodes}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h2>Edges</h2>
+              <table>
+                <tbody>
+                  {listOfEdges}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div className="cell medium-8" style={{background: 'lightgray'}}>
           <Network options={{'height':'600px'}}>
