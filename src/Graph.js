@@ -39,7 +39,8 @@ class Graph extends Component {
 
   deleteNode(idToDel){
     const n = this.state.nodes.filter(x => x.id !== idToDel)
-    this.setState({nodes: n})
+    const e = this.state.edges.filter(x => x.from !== idToDel && x.to !== idToDel)
+    this.setState({nodes: n, edges: e})
   }
 
   deleteEdge(idToDel){
