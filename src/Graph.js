@@ -38,12 +38,12 @@ class Graph extends Component {
   updateType(id, newValue){
     if(id[0] === "e"){
       let e = this.state.edges
-      const indexToUpdate = e.findIndex((z)=>z.id == id)
+      const indexToUpdate = e.findIndex((z)=>z.id === id)
       e[indexToUpdate]['type'] = newValue
       this.setState({edges: e})
     }else{
       let n = this.state.nodes
-      const indexToUpdate = n.findIndex((z)=>z.id == id)
+      const indexToUpdate = n.findIndex((z)=>z.id === id)
       n[indexToUpdate]['type'] = newValue
       this.setState({nodes: n})
     }
@@ -79,7 +79,7 @@ class Graph extends Component {
       <div>
         <button onClick={this.addNode}>Add Node</button>
         <button onClick={this.addEdge}>Add Edge</button>
-        <Network height={600}>
+        <Network options={{'height':'600px'}}>
           {nodes}
           {edges}
         </Network>
