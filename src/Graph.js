@@ -97,9 +97,27 @@ class Graph extends Component {
     )
     const listOfEdges = this.state.edges.map(x =>
       <tr key={x.id}>
-        <td>{x.from}</td>
-        <td>{x.type}</td>
-        <td>{x.to}</td>
+        <td>
+          <select
+            onChange={console.log(true)}
+            value={x.from}>
+            {this.state.nodes.map(a => <option value={a.id}>{a.id}</option>)}
+          </select>
+        </td>
+        <td>
+          <select
+            onChange={console.log(true)}
+            value={x.type}>
+            {this.state.edgeTypes.map(a => <option value={a}>{a}</option>)}
+          </select>
+        </td>
+        <td>
+          <select
+            onChange={console.log(true)}
+            value={x.to}>
+            {this.state.nodes.map(a => <option value={a.id}>{a.id}</option>)}
+          </select>
+        </td>
         <td><button onClick={(e) => this.deleteEdge(x.id)}>X</button></td>
       </tr>
     )
