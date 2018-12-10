@@ -127,6 +127,8 @@ class Graph extends Component {
         </td>
       </tr>
     )
+
+    const theQuery = "(a)-[:employed_by]->(b)";
     return (
       <div className="grid-x">
         <div className="cell medium-4">
@@ -156,6 +158,13 @@ class Graph extends Component {
             {nodes}
             {edges}
           </Network>
+        </div>
+        <div className="cell medium-12">
+          <div className="output-query">
+            <code>
+              {theQuery}
+            </code>
+          </div>
         </div>
       </div>
     )
