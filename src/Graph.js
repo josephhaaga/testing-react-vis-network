@@ -40,6 +40,11 @@ class Graph extends Component {
     this.setState({nodes: n})
   }
 
+  deleteEdge(idToDel){
+    const e = this.state.edges.filter(x => x.id !== idToDel)
+    this.setState({edges: e})
+  }
+
   changeType(id, newType){
     if(id[0] === 'e'){
       const z = this.state.edges
@@ -69,7 +74,7 @@ class Graph extends Component {
       );
     };
     const nodes = this.state.nodes.map(x =>
-      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} decorator={DeleteButton} />
+      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
     )
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
@@ -87,19 +92,24 @@ class Graph extends Component {
             )}
           </select>
         </td>
+        <td><button onClick={(e) => this.deleteNode(x.id)}>X</button></td>
       </tr>
     )
     const listOfEdges = this.state.edges.map(x =>
-      <tr key={x.id}><td>{x.from}</td><td>{x.type}</td><td>{x.to}</td></tr>
+      <tr key={x.id}>
+        <td>{x.from}</td>
+        <td>{x.type}</td>
+        <td>{x.to}</td>
+        <td><button onClick={(e) => this.deleteEdge(x.id)}>X</button></td>
+      </tr>
     )
     return (
       <div className="grid-x">
         <div className="cell medium-4">
-          <button className="button" onClick={this.addNode}>Add Node</button>
-          <button className="button" onClick={this.addEdge}>Add Edge</button>
           <div>
             <div>
               <h2>Nodes</h2>
+              <button className="button" onClick={this.addNode}>Add Node</button>
               <table>
                 <tbody>
                   {listOfNodes}
@@ -108,6 +118,7 @@ class Graph extends Component {
             </div>
             <div>
               <h2>Edges</h2>
+              <button className="button" onClick={this.addEdge}>Add Edge</button>
               <table>
                 <tbody>
                   {listOfEdges}
