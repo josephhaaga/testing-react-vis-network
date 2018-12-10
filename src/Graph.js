@@ -40,6 +40,28 @@ class Graph extends Component {
     this.setState({nodes: n})
   }
 
+  changeType(id, newType){
+    if(id[0] === 'e'){
+      const z = this.state.edges
+      let p = z.map(x => {
+        if(x.id === id){
+          x['type'] = newType.target.value
+        }
+        return x
+      })
+      this.setState({edges: p})
+    }else{
+      const z = this.state.nodes
+      let p = z.map(x => {
+        if(x.id === id){
+          x['type'] = newType.target.value
+        }
+        return x
+      })
+      this.setState({nodes: p})
+    }
+  }
+
   render(){
     const DeleteButton = props => {
       return (
@@ -52,11 +74,23 @@ class Graph extends Component {
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
-    const listOfNodes = this.state.nodes.map(x =>
-      <tr><td>{x.id}</td><td style={{color: 'red'}}>isa</td><td>{x.type}</td></tr>
+    const listOfNodes = this.state.nodes.map((x, idx) =>
+      <tr key={idx}>
+        <td>{x.id}</td>
+        <td style={{color: 'red'}}>isa</td>
+        <td>
+          <select
+            value={x.type}
+            onChange={(e)=>this.changeType(x.id, e)}>
+            {this.state.nodeTypes.map((y, idx) =>
+              <option key={idx} value={y}>{y}</option>
+            )}
+          </select>
+        </td>
+      </tr>
     )
     const listOfEdges = this.state.edges.map(x =>
-      <tr><td>{x.from}</td><td>{x.type}</td><td>{x.to}</td></tr>
+      <tr key={x.id}><td>{x.from}</td><td>{x.type}</td><td>{x.to}</td></tr>
     )
     return (
       <div className="grid-x">
