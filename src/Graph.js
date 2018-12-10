@@ -5,6 +5,7 @@ class Graph extends Component {
   constructor(props){
     super(props)
     this.addNode = this.addNode.bind(this)
+    this.addEdge = this.addEdge.bind(this)
     this.state = {
       nodes: [
         {id: 'v1', type: 'Person'},
@@ -28,11 +29,10 @@ class Graph extends Component {
   }
 
   addEdge(){
-    let nodes = this.state.nodes
     let e = this.state.edges
-    // const newId = "vertex"+n.length
-    // n.push({id: newId, label:'New Node'})
-    // this.setState({edges: n})
+    const newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
+    e.push({id: newId, type: "Edge"})
+    this.setState({edges: e})
   }
 
   deleteNode(idToDel){
