@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Network, Node, Edge } from '@lifeomic/react-vis-network';
+import { Network } from '@lifeomic/react-vis-network';
+import { Node, Edge } from './GraphElements.js';
 
 class Graph extends Component {
   constructor(props){
