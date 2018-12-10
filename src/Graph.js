@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import { Network, Node, Edge } from '@lifeomic/react-vis-network';
+import {PrismCode} from "react-prism";
+// require('prismjs/themes/prism.css');
 
 class Graph extends Component {
   constructor(props){
     super(props)
     this.addNode = this.addNode.bind(this)
     this.addEdge = this.addEdge.bind(this)
+    this.genScal = this.genScal.bind(this)
+    // this.deleteNode = this.deleteNode.bind(this)
+    // this.deleteEdge = this.deleteEdge.bind(this)
+    // this.changeType = this.changeType.bind(this)
     this.state = {
       nodes: [
         {id: 'v1', type: 'Person'},
         {id: 'v2', type: 'Vertex'},
         {id: 'v3', type: 'Person'},
+        {id: 'v4', type: 'Vertex'},
       ],
       edges: [
         {id: 'e1', from: 'v1', to: 'v2', type: 'employed_by'},
@@ -44,6 +51,7 @@ class Graph extends Component {
   }
 
   deleteEdge(idToDel){
+    console.log("running deleteEdge on "+idToDel);
     const e = this.state.edges.filter(x => x.id !== idToDel)
     this.setState({edges: e})
   }
@@ -70,6 +78,10 @@ class Graph extends Component {
     }
   }
 
+  genScal(){
+    this.setState({generateScala: true})
+  }
+
   render(){
     const nodes = this.state.nodes.map(x =>
       <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
@@ -77,6 +89,7 @@ class Graph extends Component {
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
+    const avail = ((this.state.generateScala) ? `disabled` : null);
     const listOfNodes = this.state.nodes.map((x, idx) =>
       <tr key={idx}>
         <td>{x.id}</td>
@@ -84,6 +97,7 @@ class Graph extends Component {
         <td>
           <select
             value={x.type}
+            disabled={avail}
             onChange={(e)=>this.changeType(x.id, e)}>
             {this.state.nodeTypes.map((y, idx) =>
               <option key={idx} value={y}>{y}</option>
@@ -97,28 +111,31 @@ class Graph extends Component {
       <tr key={x.id}>
         <td>
           <select
+            disabled={avail}
             onChange={e => this.changeType(x.id, {"from": e.target.value})}
             value={x.from}>
-            {this.state.nodes.map(a =>
-              <option value={a.id}>{a.id}</option>
+            {this.state.nodes.map((a, idx) =>
+              <option key={idx} value={a.id}>{a.id}</option>
             )}
           </select>
         </td>
         <td>
           <select
+            disabled={avail}
             onChange={e => this.changeType(x.id, {"type": e.target.value})}
             value={x.type}>
-            {this.state.edgeTypes.map(a =>
-              <option value={a}>{a}</option>
+            {this.state.edgeTypes.map((a, idx) =>
+              <option key={idx} value={a}>{a}</option>
             )}
           </select>
         </td>
         <td>
           <select
+            disabled={avail}
             onChange={e => this.changeType(x.id, {"to": e.target.value})}
             value={x.to}>
-            {this.state.nodes.map(a =>
-              <option value={a.id}>{a.id}</option>
+            {this.state.nodes.map((a, idx) =>
+              <option key={idx} value={a.id}>{a.id}</option>
             )}
           </select>
         </td>
@@ -128,14 +145,45 @@ class Graph extends Component {
       </tr>
     )
 
-    const theQuery = "(a)-[:employed_by]->(b)";
+    const srcs = this.state.edges.map(x => x.from)
+    const dsts = this.state.edges.map(x => x.to)
+    let allNodes = this.state.nodes.map(x => x.id)
+    const usedNodes = new Set([...new Set(srcs), ...new Set(dsts)])
+    let difference = [...new Set(
+      [...new Set(allNodes)].filter(x => !usedNodes.has(x)))];
+
+    const theQuery = ((this.state.generateScala)
+      ? <div>
+          <PrismCode className="language-scala">
+            {'val a = g.motif("'+this.state.edges.map(x =>
+                "("+x.from+")-["+x.type+"]->("+x.to+");"
+              ).join(" ")
+              +difference.map(x => "("+x+');')+'")'}
+            <br/>
+            {this.state.nodes.filter(x =>
+              x.type !== "Vertex"
+            ).map(x =>
+              ".filter("+x.id+" == '"+x.type+"')"
+            )}
+            <br />
+            {this.state.edges.filter(x =>
+              x.type !== "Edge"
+            ).map(x =>
+              ".filter("+x.id+" == '"+x.type+"')"
+            )};
+          </PrismCode>
+        </div>
+      : null
+    )
+
     return (
       <div className="grid-x">
         <div className="cell medium-4">
           <div>
             <div>
               <h2>Nodes</h2>
-              <button className="button" onClick={this.addNode}>Add Node</button>
+              <button className="button"
+                onClick={this.addNode}>Add Node</button>
               <table>
                 <tbody>
                   {listOfNodes}
@@ -150,6 +198,9 @@ class Graph extends Component {
                   {listOfEdges}
                 </tbody>
               </table>
+              <button
+                onClick={this.genScal}
+                className="button success">Generate Scala</button>
             </div>
           </div>
         </div>
@@ -161,9 +212,7 @@ class Graph extends Component {
         </div>
         <div className="cell medium-12">
           <div className="output-query">
-            <code>
-              {theQuery}
-            </code>
+            {theQuery}
           </div>
         </div>
       </div>
