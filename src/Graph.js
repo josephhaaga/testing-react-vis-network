@@ -31,7 +31,9 @@ class Graph extends Component {
   addEdge(){
     let e = this.state.edges
     const newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
-    e.push({id: newId, type: "Edge"})
+    const f = this.state.nodes[0].id
+    const t = this.state.nodes[0].id
+    e.push({id: newId, type: "Edge", from: f, to: t})
     this.setState({edges: e})
   }
 
@@ -50,7 +52,7 @@ class Graph extends Component {
       const z = this.state.edges
       let p = z.map(x => {
         if(x.id === id){
-          x['type'] = newType.target.value
+          x = Object.assign(x, newType)
         }
         return x
       })
@@ -99,26 +101,34 @@ class Graph extends Component {
       <tr key={x.id}>
         <td>
           <select
-            onChange={console.log(true)}
+            onChange={e => this.changeType(x.id, {"from": e.target.value})}
             value={x.from}>
-            {this.state.nodes.map(a => <option value={a.id}>{a.id}</option>)}
+            {this.state.nodes.map(a =>
+              <option value={a.id}>{a.id}</option>
+            )}
           </select>
         </td>
         <td>
           <select
-            onChange={console.log(true)}
+            onChange={e => this.changeType(x.id, {"type": e.target.value})}
             value={x.type}>
-            {this.state.edgeTypes.map(a => <option value={a}>{a}</option>)}
+            {this.state.edgeTypes.map(a =>
+              <option value={a}>{a}</option>
+            )}
           </select>
         </td>
         <td>
           <select
-            onChange={console.log(true)}
+            onChange={e => this.changeType(x.id, {"to": e.target.value})}
             value={x.to}>
-            {this.state.nodes.map(a => <option value={a.id}>{a.id}</option>)}
+            {this.state.nodes.map(a =>
+              <option value={a.id}>{a.id}</option>
+            )}
           </select>
         </td>
-        <td><button onClick={(e) => this.deleteEdge(x.id)}>X</button></td>
+        <td>
+          <button onClick={(e) => this.deleteEdge(x.id)}>X</button>
+        </td>
       </tr>
     )
     return (
