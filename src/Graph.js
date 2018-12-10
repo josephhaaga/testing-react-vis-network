@@ -22,7 +22,7 @@ class Graph extends Component {
 
   addNode(){
     let n = this.state.nodes
-    const newId = "v" + (n.length + 1)
+    const newId = "v" + (Math.max(...n.map(x => parseInt(x.id.slice(1)))) + 1)
     n.push({id: newId, type: 'Vertex'})
     this.setState({nodes: n})
   }
@@ -35,54 +35,35 @@ class Graph extends Component {
     // this.setState({edges: n})
   }
 
-  updateType(id, newValue){
-    if(id[0] === "e"){
-      let e = this.state.edges
-      const indexToUpdate = e.findIndex((z)=>z.id === id)
-      e[indexToUpdate]['type'] = newValue
-      this.setState({edges: e})
-    }else{
-      let n = this.state.nodes
-      const indexToUpdate = n.findIndex((z)=>z.id === id)
-      n[indexToUpdate]['type'] = newValue
-      this.setState({nodes: n})
-    }
+  deleteNode(idToDel){
+    const n = this.state.nodes.filter(x => x.id !== idToDel)
+    this.setState({nodes: n})
   }
 
   render(){
-    const NodeDecorator = props => {
+    const DeleteButton = props => {
       return (
-        <select value={props.type} onChange={(e) => this.updateType(props.id, e.target.value)}>
-          {this.state.nodeTypes.map(x =>
-            <option value={x} key={"node-"+x}>{x}</option>
-          )}
-        </select>
+        <button onClick={(e) => this.deleteNode(props.id)}>X</button>
       );
     };
-    const EdgeDecorator = props => {
-      return (
-        <select value={props.type} onChange={(e) => this.updateType(props.id, e.target.value)}>
-          {this.state.edgeTypes.map(x =>
-            <option value={x} key={"edge-"+x}>{x}</option>
-          )}
-        </select>
-      );
-    };
-
     const nodes = this.state.nodes.map(x =>
-      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} decorator={NodeDecorator} />
+      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} decorator={DeleteButton} />
     )
     const edges = this.state.edges.map(x =>
-      <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} decorator={EdgeDecorator} type={x.type}/>
+      <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
     return (
-      <div>
-        <button onClick={this.addNode}>Add Node</button>
-        <button onClick={this.addEdge}>Add Edge</button>
-        <Network options={{'height':'600px'}}>
-          {nodes}
-          {edges}
-        </Network>
+      <div className="grid-x">
+        <div className="cell medium-4">
+          <button className="button" onClick={this.addNode}>Add Node</button>
+          <button className="button" onClick={this.addEdge}>Add Edge</button>
+        </div>
+        <div className="cell medium-8" style={{background: 'lightgray'}}>
+          <Network options={{'height':'600px'}}>
+            {nodes}
+            {edges}
+          </Network>
+        </div>
       </div>
     )
   }
