@@ -70,11 +70,6 @@ class Graph extends Component {
   }
 
   render(){
-    const DeleteButton = props => {
-      return (
-        <button onClick={(e) => this.deleteNode(props.id)}>X</button>
-      );
-    };
     const nodes = this.state.nodes.map(x =>
       <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
     )
