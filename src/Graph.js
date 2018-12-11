@@ -156,7 +156,7 @@ class Graph extends Component {
       ? <div>
           <PrismCode className="language-scala">
             {'val a = g.motif("'+this.state.edges.map(x =>
-                "("+x.from+")-["+x.type+"]->("+x.to+");"
+                "("+x.from+")-["+x.id+"]->("+x.to+");"
               ).join(" ")
               +difference.map(x => "("+x+');')+'")'}
             <br/>
