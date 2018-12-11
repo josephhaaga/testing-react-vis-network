@@ -37,6 +37,7 @@ class Graph extends Component {
 
   addEdge(){
     let e = this.state.edges
+    // TODO: assign new ID if length of edges = 0 
     const newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
     const f = this.state.nodes[0].id
     const t = this.state.nodes[0].id
