@@ -140,7 +140,7 @@ class Graph extends Component {
           </select>
         </td>
         <td>
-          <button onClick={(e) => this.deleteEdge(x.id)}>X</button>
+          <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
         </td>
       </tr>
     )
@@ -163,13 +163,13 @@ class Graph extends Component {
             {this.state.nodes.filter(x =>
               x.type !== "Vertex"
             ).map(x =>
-              ".filter("+x.id+" == '"+x.type+"')"
+              ".filter("+x.id+".type == '"+x.type+"')"
             )}
             <br />
             {this.state.edges.filter(x =>
               x.type !== "Edge"
             ).map(x =>
-              ".filter("+x.id+" == '"+x.type+"')"
+              ".filter("+x.id+".relationship == '"+x.type+"')"
             )};
           </PrismCode>
         </div>
