@@ -39,3 +39,10 @@ select {
   width: auto;
   padding: 0;
 }
+
+select:focus {
+  border: none;
+  border-bottom: 2px solid lightblue;
+  box-shadow: -1px 8px 5px -5px #cacaca;
+  background: transparent;
+}
