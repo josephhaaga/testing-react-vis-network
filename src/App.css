@@ -46,3 +46,18 @@ select:focus {
   box-shadow: -1px 8px 5px -5px #cacaca;
   background: transparent;
 }
+
+
+.filter-list {
+  list-style-type: none;
+  background: #2f79df;
+  margin: 0;
+  opacity: 0.3;
+  color: white;
+  transition: 0.2s all;
+  font-size: 12px;
+}
+
+.filter-list:hover {
+  opacity: 0.9;
+}

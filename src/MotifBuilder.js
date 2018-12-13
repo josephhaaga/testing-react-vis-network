@@ -85,21 +85,23 @@ class MotifBuilder extends Component {
   }
 
   render(){
+
+    const Filters = props => {
+      const data = props.data
+      return (
+        (("filters" in data)
+          ? <ul className="filter-list">
+              {data.filters.map(f =>
+                <li>{f.attribute + " " + f.operation + " " + f.value}</li>
+              )}
+            </ul>
+          : null
+        )
+      );
+    };
+
     const nodes = this.state.nodes.map(x =>
-      (("filters" in x)
-        ? <Node
-            key={"n"+x.id}
-            id={x.id}
-            label={
-              x.id
-              +": "
-              +x.type
-              +"\nwith"
-              +x.filters.map(f =>
-                "\n" + f.attribute + " " + f.operation + " " + f.value
-              )} type={x.type} />
-        : <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
-      )
+      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} data={x} type={x.type} decorator={Filters} />
     )
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
