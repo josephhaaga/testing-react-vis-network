@@ -104,12 +104,13 @@ class MotifBuilder extends Component {
       <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} data={x} type={x.type} decorator={Filters} />
     )
     const edges = this.state.edges.map(x =>
-      <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
+      <Edge key={"e"+x.id} id={x.id} color="green" from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
 
 
     const avail = ((this.state.generateScala) ? `disabled` : null);
     // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
+    // TODO: move listOfNodes and listOfEdges into Sidebar
     const listOfNodes = this.state.nodes.map((x, idx) =>
       <tr key={idx}>
         <td>{x.id}</td>
