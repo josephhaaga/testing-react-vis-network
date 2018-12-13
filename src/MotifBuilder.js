@@ -11,7 +11,10 @@ class MotifBuilder extends Component {
     this.genScal = this.genScal.bind(this)
     this.state = {
       nodes: [
-        {id: 'v1', type: 'Person'},
+        {id: 'v1', type: 'Person', filters: [
+          {attribute: "name", dtype: "string", operation: "contains", value: "Haaga"},
+          {attribute: "age", dtype: "int", operation: ">", value: 30},
+        ]},
         {id: 'v2', type: 'Vertex'},
         {id: 'v3', type: 'Person'},
         {id: 'v4', type: 'Vertex'},
@@ -83,7 +86,20 @@ class MotifBuilder extends Component {
 
   render(){
     const nodes = this.state.nodes.map(x =>
-      <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
+      (("filters" in x)
+        ? <Node
+            key={"n"+x.id}
+            id={x.id}
+            label={
+              x.id
+              +": "
+              +x.type
+              +"\nwith"
+              +x.filters.map(f =>
+                "\n" + f.attribute + " " + f.operation + " " + f.value
+              )} type={x.type} />
+        : <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} type={x.type} />
+      )
     )
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
