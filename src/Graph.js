@@ -89,6 +89,7 @@ class Graph extends Component {
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
     const avail = ((this.state.generateScala) ? `disabled` : null);
+    // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
     const listOfNodes = this.state.nodes.map((x, idx) =>
       <tr key={idx}>
         <td>{x.id}</td>
