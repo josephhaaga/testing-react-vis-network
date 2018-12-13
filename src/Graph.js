@@ -175,54 +175,56 @@ class Graph extends Component {
     )
 
     return (
-      <div className="grid-x">
-        <div className="cell medium-4">
-          <div>
-            <div className="grid-x">
-              <div className="cell medium-6">
-                <h2>Nodes</h2>
+
+      <div class="grid-y medium-grid-frame">
+        <div class="cell medium-auto medium-cell-block-container">
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-4 medium-cell-block-y">
+              <div className="grid-x">
+                <div className="cell medium-6">
+                  <h2>Nodes</h2>
+                </div>
+                <div className="cell medium-6">
+                  <button className="button"
+                    onClick={this.addNode}>Add Node</button>
+                </div>
+                <div className="cell medium-12">
+                  <table>
+                    <tbody>
+                      {listOfNodes}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <div className="cell medium-6">
-                <button className="button"
-                  onClick={this.addNode}>Add Node</button>
-              </div>
-              <div className="cell medium-12">
-                <table>
-                  <tbody>
-                    {listOfNodes}
-                  </tbody>
-                </table>
+              <div className="grid-x">
+                <div className="cell medium-6">
+                  <h2>Edges</h2>
+                </div>
+                <div className="cell medium-6">
+                  <button className="button"
+                   onClick={this.addEdge}>Add Edge</button>
+                </div>
+                <div className="cell medium-12">
+                  <table>
+                    <tbody>
+                      {listOfEdges}
+                    </tbody>
+                  </table>
+                </div>
+                <button
+                  onClick={this.genScal}
+                  className="button success">Generate Scala</button>
               </div>
             </div>
-
-            <div className="grid-x">
-              <div className="cell medium-6">
-                <h2>Edges</h2>
-              </div>
-              <div className="cell medium-6">
-                <button className="button"
-                 onClick={this.addEdge}>Add Edge</button>
-              </div>
-              <div className="cell medium-12">
-                <table>
-                  <tbody>
-                    {listOfEdges}
-                  </tbody>
-                </table>
-              </div>
-              <button
-                onClick={this.genScal}
-                className="button success">Generate Scala</button>
+            <div class="cell medium-8 medium-cell-block-y" style={{background: 'lightgray'}}>
+              <Network options={{'height':'600px'}}>
+                {nodes}
+                {edges}
+              </Network>
             </div>
           </div>
         </div>
-        <div className="cell medium-8" style={{background: 'lightgray'}}>
-          <Network options={{'height':'600px'}}>
-            {nodes}
-            {edges}
-          </Network>
-        </div>
-        <div className="cell medium-12">
+        <div class="cell shrink footer" style={{background: "black"}}>
           <div className="output-query">
             {theQuery}
           </div>
