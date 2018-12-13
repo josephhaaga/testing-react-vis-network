@@ -9,9 +9,6 @@ class Graph extends Component {
     this.addNode = this.addNode.bind(this)
     this.addEdge = this.addEdge.bind(this)
     this.genScal = this.genScal.bind(this)
-    // this.deleteNode = this.deleteNode.bind(this)
-    // this.deleteEdge = this.deleteEdge.bind(this)
-    // this.changeType = this.changeType.bind(this)
     this.state = {
       nodes: [
         {id: 'v1', type: 'Person'},
@@ -37,6 +34,7 @@ class Graph extends Component {
 
   addEdge(){
     let e = this.state.edges
+    // TODO: assign new ID if length of edges = 0
     const newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
     const f = this.state.nodes[0].id
     const t = this.state.nodes[0].id
@@ -180,24 +178,38 @@ class Graph extends Component {
       <div className="grid-x">
         <div className="cell medium-4">
           <div>
-            <div>
-              <h2>Nodes</h2>
-              <button className="button"
-                onClick={this.addNode}>Add Node</button>
-              <table>
-                <tbody>
-                  {listOfNodes}
-                </tbody>
-              </table>
+            <div className="grid-x">
+              <div className="cell medium-6">
+                <h2>Nodes</h2>
+              </div>
+              <div className="cell medium-6">
+                <button className="button"
+                  onClick={this.addNode}>Add Node</button>
+              </div>
+              <div className="cell medium-12">
+                <table>
+                  <tbody>
+                    {listOfNodes}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div>
-              <h2>Edges</h2>
-              <button className="button" onClick={this.addEdge}>Add Edge</button>
-              <table>
-                <tbody>
-                  {listOfEdges}
-                </tbody>
-              </table>
+
+            <div className="grid-x">
+              <div className="cell medium-6">
+                <h2>Edges</h2>
+              </div>
+              <div className="cell medium-6">
+                <button className="button"
+                 onClick={this.addEdge}>Add Edge</button>
+              </div>
+              <div className="cell medium-12">
+                <table>
+                  <tbody>
+                    {listOfEdges}
+                  </tbody>
+                </table>
+              </div>
               <button
                 onClick={this.genScal}
                 className="button success">Generate Scala</button>
