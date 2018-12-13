@@ -30,3 +30,12 @@
     transform: rotate(360deg);
   }
 }
+
+select {
+  border: none;
+  border-bottom: 1px solid gray;
+  background: none;
+  padding-right: 0;
+  width: auto;
+  padding: 0;
+}
