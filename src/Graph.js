@@ -20,6 +20,7 @@ class Graph extends Component {
         {id: 'e1', from: 'v1', to: 'v2', type: 'employed_by'},
         {id: 'e2', from: 'v3', to: 'v2', type: 'Edge'},
       ],
+      // TODO: refactor to constrain options, adhering to Graph Triplets from API
       nodeTypes: ["Vertex", "Person", "Company"],
       edgeTypes: ["Edge", "employed_by", "claims_dependent"]
     }
