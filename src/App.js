@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Graph } from './Graph.js'
+import { MotifBuilder } from './MotifBuilder.js'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <div>
-          <Graph />
+          <MotifBuilder />
         </div>
       </div>
     );

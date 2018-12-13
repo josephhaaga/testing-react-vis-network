@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Network, Node, Edge } from '@lifeomic/react-vis-network';
-import {PrismCode} from "react-prism";
-// require('prismjs/themes/prism.css');
+import { QueryGenerator } from './QueryGenerator';
+import { Sidebar } from './Sidebar';
 
-class Graph extends Component {
+class MotifBuilder extends Component {
   constructor(props){
     super(props)
     this.addNode = this.addNode.bind(this)
@@ -88,6 +88,8 @@ class Graph extends Component {
     const edges = this.state.edges.map(x =>
       <Edge key={"e"+x.id} id={x.id} from={x.from} to={x.to} label={x.type} type={x.type}/>
     )
+
+
     const avail = ((this.state.generateScala) ? `disabled` : null);
     // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
     const listOfNodes = this.state.nodes.map((x, idx) =>
@@ -145,90 +147,30 @@ class Graph extends Component {
       </tr>
     )
 
-    const srcs = this.state.edges.map(x => x.from)
-    const dsts = this.state.edges.map(x => x.to)
-    let allNodes = this.state.nodes.map(x => x.id)
-    const usedNodes = new Set([...new Set(srcs), ...new Set(dsts)])
-    let difference = [...new Set(
-      [...new Set(allNodes)].filter(x => !usedNodes.has(x)))];
-
-    const theQuery = ((this.state.generateScala)
-      ? <div>
-          <PrismCode className="language-scala">
-            {'val a = g.motif("'+this.state.edges.map(x =>
-                "("+x.from+")-["+x.id+"]->("+x.to+");"
-              ).join(" ")
-              +difference.map(x => "("+x+');')+'")'}
-            <br/>
-            {this.state.nodes.filter(x =>
-              x.type !== "Vertex"
-            ).map(x =>
-              ".filter("+x.id+".type == '"+x.type+"')"
-            )}
-            <br />
-            {this.state.edges.filter(x =>
-              x.type !== "Edge"
-            ).map(x =>
-              ".filter("+x.id+".relationship == '"+x.type+"')"
-            )};
-          </PrismCode>
-        </div>
-      : null
-    )
 
     return (
-
-      <div class="grid-y medium-grid-frame">
-        <div class="cell medium-auto medium-cell-block-container">
-          <div class="grid-x grid-padding-x">
-            <div class="cell medium-4 medium-cell-block-y">
-              <div className="grid-x">
-                <div className="cell medium-6">
-                  <h2>Nodes</h2>
-                </div>
-                <div className="cell medium-6">
-                  <button className="button"
-                    onClick={this.addNode}>Add Node</button>
-                </div>
-                <div className="cell medium-12">
-                  <table>
-                    <tbody>
-                      {listOfNodes}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div className="grid-x">
-                <div className="cell medium-6">
-                  <h2>Edges</h2>
-                </div>
-                <div className="cell medium-6">
-                  <button className="button"
-                   onClick={this.addEdge}>Add Edge</button>
-                </div>
-                <div className="cell medium-12">
-                  <table>
-                    <tbody>
-                      {listOfEdges}
-                    </tbody>
-                  </table>
-                </div>
-                <button
-                  onClick={this.genScal}
-                  className="button success">Generate Scala</button>
-              </div>
+      <div className="grid-y small-grid-frame">
+        <div className="cell small-auto small-cell-block-container">
+          <div className="grid-x grid-padding-x">
+            <div className="cell small-6 medium-4 small-cell-block-y">
+              <Sidebar
+                listOfNodes={listOfNodes}
+                listOfEdges={listOfEdges}
+                addNode={this.addNode}
+                addEdge={this.addEdge}
+                genScal={this.genScal} />
             </div>
-            <div class="cell medium-8 medium-cell-block-y" style={{background: 'lightgray'}}>
-              <Network options={{'height':'600px'}}>
+            <div className="cell small-6 medium-8 small-cell-block-y" style={{background: 'lightgray'}}>
+              <Network options={{'height':'500px'}}>
                 {nodes}
                 {edges}
               </Network>
             </div>
           </div>
         </div>
-        <div class="cell shrink footer" style={{background: "black"}}>
+        <div className="cell shrink footer" style={{background: "black"}}>
           <div className="output-query">
-            {theQuery}
+            <QueryGenerator edges={this.state.edges} nodes={this.state.nodes} />
           </div>
         </div>
       </div>
@@ -236,4 +178,4 @@ class Graph extends Component {
   }
 }
 
-export { Graph }
+export { MotifBuilder }
