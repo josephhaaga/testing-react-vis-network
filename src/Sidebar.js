@@ -2,6 +2,55 @@ import React, { Component } from 'react';
 
 class Sidebar extends Component {
   render() {
+
+    const listOfNodes = this.props.nodes.map((x, idx) =>
+      <div className="cell small-12 entity" key={idx}>
+        <div className="grid-x">
+          <div className="cell small-4">{x.id}</div>
+          <div className="cell small-4" style={{color: "red"}}>isa</div>
+          <div className="cell small-4">
+            <select
+              value={x.type}
+              disabled={this.props.avail}
+              onChange={(e)=>this.props.changeType(x.id, e)}>
+              {this.props.nodeTypes.map((y, idx) =>
+                <option key={idx} value={y}>{y}</option>
+              )}
+            </select>
+            <button className="delete" onClick={(e) => this.props.deleteNode(x.id)}>X</button>
+          </div>
+          <div className="cell small-12">
+            {<ul className="filters">
+                {x.filters.map((f, idx2) =>
+                  <li key={idx2}>
+                    <div className="grid-x" style={{position: "relative"}}>
+                      <button className="delete-filter">x</button>
+                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                        <div key={idx3} className="cell small-4">
+                          <select onChange={e => this.props.updateFilter(e, x.id, a)}>
+                            <option>{f[a]}</option>
+                            <option>Another option</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                )}
+              </ul>
+            }
+          </div>
+          <div className="cell small-12">
+            <button
+              className="button"
+              onClick={(e) => this.props.addFilter(x.id)}>Add Filters</button>
+          </div>
+        </div>
+      </div>
+    )
+
+
+
+
     return (
       <div className="sidebar" style={{textAlign: "left"}}>
         <div className="grid-x">
@@ -14,7 +63,7 @@ class Sidebar extends Component {
           </div>
           <div className="cell small-12">
             <div className="grid-x">
-              {this.props.listOfNodes}
+              {listOfNodes}
             </div>
           </div>
         </div>

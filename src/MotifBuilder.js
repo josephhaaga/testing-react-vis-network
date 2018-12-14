@@ -9,6 +9,11 @@ class MotifBuilder extends Component {
     this.addNode = this.addNode.bind(this)
     this.addEdge = this.addEdge.bind(this)
     this.genScal = this.genScal.bind(this)
+    this.addFilter = this.addFilter.bind(this)
+    this.changeType = this.changeType.bind(this)
+    this.deleteNode = this.deleteNode.bind(this)
+    this.updateFilter = this.updateFilter.bind(this)
+    this.addFilter = this.addFilter.bind(this)
     this.state = {
       nodes: [
         {id: 'v1', type: 'Person', filters: [
@@ -138,50 +143,7 @@ class MotifBuilder extends Component {
     const avail = ((this.state.generateScala) ? `disabled` : null);
     // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
     // TODO: move listOfNodes and listOfEdges into Sidebar
-    const listOfNodes = this.state.nodes.map((x, idx) =>
-      <div className="cell small-12 entity" key={idx}>
-        <div className="grid-x">
-          <div className="cell small-4">{x.id}</div>
-          <div className="cell small-4" style={{color: "red"}}>isa</div>
-          <div className="cell small-4">
-            <select
-              value={x.type}
-              disabled={avail}
-              onChange={(e)=>this.changeType(x.id, e)}>
-              {this.state.nodeTypes.map((y, idx) =>
-                <option key={idx} value={y}>{y}</option>
-              )}
-            </select>
-            <button className="delete" onClick={(e) => this.deleteNode(x.id)}>X</button>
-          </div>
-          <div className="cell small-12">
-            {<ul className="filters">
-                {x.filters.map((f, idx2) =>
-                  <li key={idx2}>
-                    <div className="grid-x" style={{position: "relative"}}>
-                      <button className="delete-filter">x</button>
-                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
-                        <div key={idx3} className="cell small-4">
-                          <select onChange={e => this.updateFilter(e, x.id, a)}>
-                            <option>{f[a]}</option>
-                            <option>Another option</option>
-                          </select>
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                )}
-              </ul>
-            }
-          </div>
-          <div className="cell small-12">
-            <button
-              className="button"
-              onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
-          </div>
-        </div>
-      </div>
-    )
+
     const listOfEdges = this.state.edges.map(x =>
       <div className="cell small-12 entity" key={x.id}>
         <div className="grid-x">
@@ -254,11 +216,17 @@ class MotifBuilder extends Component {
           <div className="grid-x grid-padding-x">
             <div className="cell small-6 small-cell-block-y">
               <Sidebar
-                listOfNodes={listOfNodes}
+                nodes={this.state.nodes}
+                nodeTypes={this.state.nodeTypes}
                 listOfEdges={listOfEdges}
                 addNode={this.addNode}
                 addEdge={this.addEdge}
-                genScal={this.genScal} />
+                genScal={this.genScal}
+                avail={avail}
+                changeType={this.changeType}
+                deleteNote={this.deleteNode}
+                updateFilter={this.updateFilter}
+                addFilter={this.addFilter} />
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
               <Network options={{'height':'380px'}}>
