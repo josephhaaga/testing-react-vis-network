@@ -88,6 +88,9 @@ class MotifBuilder extends Component {
     this.setState({generateScala: true})
   }
 
+  addFilter(id){
+    console.log(id);
+  }
 
   updateFilter(a,b,d) {
     console.log(a, b, d);
@@ -134,11 +137,11 @@ class MotifBuilder extends Component {
                 <option key={idx} value={y}>{y}</option>
               )}
             </select>
-            <button onClick={(e) => this.deleteNode(x.id)}>X</button>
+            <button className="delete" onClick={(e) => this.deleteNode(x.id)}>X</button>
           </div>
           <div className="cell small-12">
             {(("filters" in x)
-              ? <ul style={{textAlign: "left", listStyleType: "none"}}>
+              ? <ul style={{listStyleType: "none"}}>
                   {x.filters.map((f, idx2) =>
                     <li key={idx2}>
                       <div className="grid-x">
@@ -154,8 +157,13 @@ class MotifBuilder extends Component {
                     </li>
                   )}
                 </ul>
-              : <div><button className="button">Add Filters</button></div>
+              : null
             )}
+            <div className="cell small-12">
+              <button
+                className="button"
+                onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
+            </div>
           </div>
         </div>
       </div>
@@ -214,7 +222,7 @@ class MotifBuilder extends Component {
                 genScal={this.genScal} />
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
-              <Network options={{'height':'500px'}}>
+              <Network options={{'height':'380px'}}>
                 {nodes}
                 {edges}
               </Network>

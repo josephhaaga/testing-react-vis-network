@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 class Sidebar extends Component {
   render() {
     return (
-      <div className="sidebar">
+      <div className="sidebar" style={{textAlign: "left"}}>
         <div className="grid-x">
           <div className="cell small-6">
             <h2>Nodes</h2>
           </div>
-          <div className="cell small-6">
+          <div className="cell small-6" style={{alignSelf: "flex-end", textAlign: "right"}}>
             <button className="button"
               onClick={this.props.addNode}>+</button>
           </div>
@@ -22,7 +22,7 @@ class Sidebar extends Component {
           <div className="cell small-6">
             <h2>Edges</h2>
           </div>
-          <div className="cell small-6">
+          <div className="cell small-6" style={{alignSelf: "flex-end", textAlign: "right"}}>
             <button className="button"
              onClick={this.props.addEdge}>+</button>
           </div>
