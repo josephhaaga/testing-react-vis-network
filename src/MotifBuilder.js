@@ -96,6 +96,10 @@ class MotifBuilder extends Component {
     console.log(a, b, d);
   }
 
+  deleteFilter(id, filter){
+    console.log(id, filter);
+  }
+
   render(){
 
     const Filters = props => {
@@ -141,10 +145,11 @@ class MotifBuilder extends Component {
           </div>
           <div className="cell small-12">
             {(("filters" in x)
-              ? <ul style={{listStyleType: "none"}}>
+              ? <ul className="filters">
                   {x.filters.map((f, idx2) =>
                     <li key={idx2}>
-                      <div className="grid-x">
+                      <div className="grid-x" style={{position: "relative"}}>
+                        <button className="delete-filter">x</button>
                         {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
                           <div key={idx3} className="cell small-4">
                             <select onChange={e => this.updateFilter(e, x.id, a)}>
@@ -181,7 +186,7 @@ class MotifBuilder extends Component {
               )}
             </select>
           </div>
-          <div className="cell small-4">
+          <div className="cell small-6">
             <select
               disabled={avail}
               onChange={e => this.changeType(x.id, {"type": e.target.value})}
@@ -201,7 +206,7 @@ class MotifBuilder extends Component {
               )}
             </select>
           </div>
-          <div className="cell small-2">
+          <div className="delete">
             <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
           </div>
         </div>
