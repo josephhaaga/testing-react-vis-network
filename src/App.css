@@ -20,7 +20,7 @@
 .sidebar .filters {
   list-style-type: none;
 }
-.sidebar .filters ul select {
+.sidebar .filters select {
   font-size: 12px;
 }
 
