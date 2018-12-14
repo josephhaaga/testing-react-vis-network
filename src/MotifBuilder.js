@@ -113,19 +113,33 @@ class MotifBuilder extends Component {
     // TODO: move listOfNodes and listOfEdges into Sidebar
     const listOfNodes = this.state.nodes.map((x, idx) =>
       <tr key={idx}>
-        <td>{x.id}</td>
-        <td style={{color: 'red'}}>isa</td>
         <td>
-          <select
-            value={x.type}
-            disabled={avail}
-            onChange={(e)=>this.changeType(x.id, e)}>
-            {this.state.nodeTypes.map((y, idx) =>
-              <option key={idx} value={y}>{y}</option>
-            )}
-          </select>
+          <tr>
+            <td>{x.id}</td>
+            <td style={{color: 'red'}}>isa</td>
+            <td>
+              <select
+                value={x.type}
+                disabled={avail}
+                onChange={(e)=>this.changeType(x.id, e)}>
+                {this.state.nodeTypes.map((y, idx) =>
+                  <option key={idx} value={y}>{y}</option>
+                )}
+              </select>
+            </td>
+            <td><button onClick={(e) => this.deleteNode(x.id)}>X</button></td>
+          </tr>
+          {(("filters" in x)
+            ? <ol style={{textAlign: "left"}}>
+                {x.filters.map(f =>
+                  <li>
+                    {f.attribute} {f.operation} {f.value}
+                  </li>
+                )}
+              </ol>
+            : <div><button className="button">Add Filters</button></div>
+          )}
         </td>
-        <td><button onClick={(e) => this.deleteNode(x.id)}>X</button></td>
       </tr>
     )
     const listOfEdges = this.state.edges.map(x =>
