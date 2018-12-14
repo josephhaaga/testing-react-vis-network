@@ -31,6 +31,12 @@
   }
 }
 
+.sidebar,
+.sidebar select,
+.sidebar .button{
+  font-size: 12px;
+}
+
 select {
   border: none;
   border-bottom: 1px solid gray;
@@ -38,6 +44,9 @@ select {
   padding-right: 0;
   width: auto;
   padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 select:focus {
@@ -60,4 +69,16 @@ select:focus {
 
 .filter-list:hover {
   opacity: 0.9;
+}
+
+.sidebar .entity .cell.small-4{
+  overflow: hidden;
+}
+
+.sidebar .entity:nth-of-type(2n){
+  background: #f2f2f2;
+}
+
+.sidebar .entity > .grid-x {
+  align-items: baseline;
 }

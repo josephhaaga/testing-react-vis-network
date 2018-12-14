@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Sidebar extends Component {
   render() {
     return (
-      <div>
+      <div className="sidebar">
         <div className="grid-x">
           <div className="cell small-6">
             <h2>Nodes</h2>
@@ -13,11 +13,9 @@ class Sidebar extends Component {
               onClick={this.props.addNode}>+</button>
           </div>
           <div className="cell small-12">
-            <table>
-              <tbody>
-                {this.props.listOfNodes}
-              </tbody>
-            </table>
+            <div className="grid-x">
+              {this.props.listOfNodes}
+            </div>
           </div>
         </div>
         <div className="grid-x">
@@ -29,11 +27,9 @@ class Sidebar extends Component {
              onClick={this.props.addEdge}>+</button>
           </div>
           <div className="cell small-12">
-            <table>
-              <tbody>
-                {this.props.listOfEdges}
-              </tbody>
-            </table>
+            <div className="grid-x">
+              {this.props.listOfEdges}
+            </div>
           </div>
           <button
             onClick={this.props.genScal}

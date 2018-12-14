@@ -25,7 +25,11 @@ class MotifBuilder extends Component {
       ],
       // TODO: refactor to constrain options, adhering to Graph Triplets from API
       nodeTypes: ["Vertex", "Person", "Company"],
-      edgeTypes: ["Edge", "employed_by", "claims_dependent"]
+      edgeTypes: ["Edge", "employed_by", "claims_dependent"],
+      dataTypesAndOperations: {
+        "string": ["contains", "equals"],
+        "int": ["<", ">", "==", "<=", ">=", "!="]
+      }
     }
   }
 
@@ -84,6 +88,11 @@ class MotifBuilder extends Component {
     this.setState({generateScala: true})
   }
 
+
+  updateFilter(a,b,d) {
+    console.log(a, b, d);
+  }
+
   render(){
 
     const Filters = props => {
@@ -91,8 +100,8 @@ class MotifBuilder extends Component {
       return (
         (("filters" in data)
           ? <ul className="filter-list">
-              {data.filters.map(f =>
-                <li>{f.attribute + " " + f.operation + " " + f.value}</li>
+              {data.filters.map((f, idx) =>
+                <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
               )}
             </ul>
           : null
@@ -104,7 +113,7 @@ class MotifBuilder extends Component {
       <Node key={"n"+x.id} id={x.id} label={x.id+": "+x.type} data={x} type={x.type} decorator={Filters} />
     )
     const edges = this.state.edges.map(x =>
-      <Edge key={"e"+x.id} id={x.id} color="green" from={x.from} to={x.to} label={x.type} type={x.type}/>
+      <Edge key={"e"+x.id} id={x.id} color="green" from={x.from} to={x.to} label={x.type} type={x.type} />
     )
 
 
@@ -112,72 +121,83 @@ class MotifBuilder extends Component {
     // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
     // TODO: move listOfNodes and listOfEdges into Sidebar
     const listOfNodes = this.state.nodes.map((x, idx) =>
-      <tr key={idx}>
-        <td>
-          <tr>
-            <td>{x.id}</td>
-            <td style={{color: 'red'}}>isa</td>
-            <td>
-              <select
-                value={x.type}
-                disabled={avail}
-                onChange={(e)=>this.changeType(x.id, e)}>
-                {this.state.nodeTypes.map((y, idx) =>
-                  <option key={idx} value={y}>{y}</option>
-                )}
-              </select>
-            </td>
-            <td><button onClick={(e) => this.deleteNode(x.id)}>X</button></td>
-          </tr>
-          {(("filters" in x)
-            ? <ol style={{textAlign: "left"}}>
-                {x.filters.map(f =>
-                  <li>
-                    {f.attribute} {f.operation} {f.value}
-                  </li>
-                )}
-              </ol>
-            : <div><button className="button">Add Filters</button></div>
-          )}
-        </td>
-      </tr>
+      <div className="cell small-12 entity" key={idx}>
+        <div className="grid-x">
+          <div className="cell small-4">{x.id}</div>
+          <div className="cell small-4" style={{color: "red"}}>isa</div>
+          <div className="cell small-4">
+            <select
+              value={x.type}
+              disabled={avail}
+              onChange={(e)=>this.changeType(x.id, e)}>
+              {this.state.nodeTypes.map((y, idx) =>
+                <option key={idx} value={y}>{y}</option>
+              )}
+            </select>
+            <button onClick={(e) => this.deleteNode(x.id)}>X</button>
+          </div>
+          <div className="cell small-12">
+            {(("filters" in x)
+              ? <ul style={{textAlign: "left", listStyleType: "none"}}>
+                  {x.filters.map((f, idx2) =>
+                    <li key={idx2}>
+                      <div className="grid-x">
+                        {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                          <div key={idx3} className="cell small-4">
+                            <select onChange={e => this.updateFilter(e, x.id, a)}>
+                              <option>{f[a]}</option>
+                              <option>Another option</option>
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  )}
+                </ul>
+              : <div><button className="button">Add Filters</button></div>
+            )}
+          </div>
+        </div>
+      </div>
     )
     const listOfEdges = this.state.edges.map(x =>
-      <tr key={x.id}>
-        <td>
-          <select
-            disabled={avail}
-            onChange={e => this.changeType(x.id, {"from": e.target.value})}
-            value={x.from}>
-            {this.state.nodes.map((a, idx) =>
-              <option key={idx} value={a.id}>{a.id}</option>
-            )}
-          </select>
-        </td>
-        <td>
-          <select
-            disabled={avail}
-            onChange={e => this.changeType(x.id, {"type": e.target.value})}
-            value={x.type}>
-            {this.state.edgeTypes.map((a, idx) =>
-              <option key={idx} value={a}>{a}</option>
-            )}
-          </select>
-        </td>
-        <td>
-          <select
-            disabled={avail}
-            onChange={e => this.changeType(x.id, {"to": e.target.value})}
-            value={x.to}>
-            {this.state.nodes.map((a, idx) =>
-              <option key={idx} value={a.id}>{a.id}</option>
-            )}
-          </select>
-        </td>
-        <td>
-          <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
-        </td>
-      </tr>
+      <div className="cell small-12 entity" key={x.id}>
+        <div className="grid-x">
+          <div className="cell small-3">
+            <select
+              disabled={avail}
+              onChange={e => this.changeType(x.id, {"from": e.target.value})}
+              value={x.from}>
+              {this.state.nodes.map((a, idx) =>
+                <option key={idx} value={a.id}>{a.id}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-4">
+            <select
+              disabled={avail}
+              onChange={e => this.changeType(x.id, {"type": e.target.value})}
+              value={x.type}>
+              {this.state.edgeTypes.map((a, idx) =>
+                <option key={idx} value={a}>{a}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-3">
+            <select
+              disabled={avail}
+              onChange={e => this.changeType(x.id, {"to": e.target.value})}
+              value={x.to}>
+              {this.state.nodes.map((a, idx) =>
+                <option key={idx} value={a.id}>{a.id}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-2">
+            <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
+          </div>
+        </div>
+      </div>
     )
 
 
@@ -185,7 +205,7 @@ class MotifBuilder extends Component {
       <div className="grid-y small-grid-frame">
         <div className="cell small-auto small-cell-block-container">
           <div className="grid-x grid-padding-x">
-            <div className="cell small-6 medium-4 small-cell-block-y">
+            <div className="cell small-6 small-cell-block-y">
               <Sidebar
                 listOfNodes={listOfNodes}
                 listOfEdges={listOfEdges}
@@ -193,7 +213,7 @@ class MotifBuilder extends Component {
                 addEdge={this.addEdge}
                 genScal={this.genScal} />
             </div>
-            <div className="cell small-6 medium-8 small-cell-block-y" style={{background: 'lightgray'}}>
+            <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
               <Network options={{'height':'500px'}}>
                 {nodes}
                 {edges}
