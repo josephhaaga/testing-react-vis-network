@@ -13,8 +13,9 @@ class MotifBuilder extends Component {
     this.changeType = this.changeType.bind(this)
     this.deleteNode = this.deleteNode.bind(this)
     this.deleteEdge = this.deleteEdge.bind(this)
-    this.updateFilter = this.updateFilter.bind(this)
     this.addFilter = this.addFilter.bind(this)
+    this.updateFilter = this.updateFilter.bind(this)
+    this.deleteFilter = this.deleteFilter.bind(this)
     this.state = {
       nodes: [
         {id: 'v1', type: 'Person', filters: [
@@ -96,7 +97,6 @@ class MotifBuilder extends Component {
   }
 
   addFilter(id){
-    console.log(id);
     if(id[0] === 'e'){
       let edges = this.state.edges
       edges.filter(x => x.id === id)[0]['filters'].push({attribute: "", dtype: "", operation: "", value: ""})
@@ -112,12 +112,30 @@ class MotifBuilder extends Component {
     }
   }
 
+  // TODO: Implement
   updateFilter(a,b,d) {
     console.log(a, b, d);
   }
 
-  deleteFilter(id, filter){
-    console.log(id, filter);
+  // TODO: Implement
+  deleteFilter(idOfElement, filter){
+    if(idOfElement[0] === 'e'){
+      let edges = this.state.edges
+      const idxToChange = edges.map(x => x.id === idOfElement).indexOf(true)
+      const newFilters = edges[idxToChange]['filters'].filter(x => x !== filter)
+      edges[idxToChange]['filters'] = newFilters
+      this.setState({
+        edges: edges
+      })
+    }else if(idOfElement[0] === 'v'){
+      let nodes = this.state.nodes
+      const idxToChange = nodes.map(x => x.id === idOfElement).indexOf(true)
+      const newFilters = nodes[idxToChange]['filters'].filter(x => x !== filter)
+      nodes[idxToChange]['filters'] = newFilters
+      this.setState({
+        nodes: nodes
+      })
+    }
   }
 
   render(){
@@ -126,9 +144,9 @@ class MotifBuilder extends Component {
       const data = props.data
       return (
         <ul className="filter-list">
-              {data.filters.map((f, idx) =>
-                <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
-              )}
+          {data.filters.map((f, idx) =>
+            <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
+          )}
         </ul>
       );
     };
@@ -163,7 +181,8 @@ class MotifBuilder extends Component {
                 deleteNote={this.deleteNode}
                 deleteEdge={this.deleteEdge}
                 updateFilter={this.updateFilter}
-                addFilter={this.addFilter} />
+                addFilter={this.addFilter}
+                deleteFilter={this.deleteFilter} />
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
               <Network options={{'height':'380px'}}>

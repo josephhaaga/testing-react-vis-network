@@ -24,7 +24,10 @@ class Sidebar extends Component {
                 {x.filters.map((f, idx2) =>
                   <li key={idx2}>
                     <div className="grid-x" style={{position: "relative"}}>
-                      <button className="delete-filter">x</button>
+                      <button
+                        className="delete-filter"
+                        onClick={(e) => this.props.deleteFilter(x.id, f)}
+                        >x</button>
                       {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
                         <div key={idx3} className="cell small-4">
                           <select onChange={e => this.props.updateFilter(e, x.id, a)}>
