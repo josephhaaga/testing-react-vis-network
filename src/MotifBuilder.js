@@ -52,7 +52,6 @@ class MotifBuilder extends Component {
 
   addEdge(){
     let e = this.state.edges
-    // TODO: assign new ID if length of edges = 0
     let newId = "e1"
     console.log(e.length);
     if(e.length > 0){
@@ -119,7 +118,6 @@ class MotifBuilder extends Component {
     }
   }
 
-  // TODO: Implement
   updateFilter(idOfElement, oldFilter, newFilter) {
     if(idOfElement[0] === 'e'){
       let edges = this.state.edges

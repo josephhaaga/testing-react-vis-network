@@ -1,0 +1,12 @@
+FRONTEND
+X 1. Add filter controls under each node/edge in sidebar
+X 2. Fix sidebar scroll >:(
+3. address TODOs
+X 4. replace <table> elements in Sidebar
+5. Pull react-vis-network and implement edge colors and edge Decorators
+6. Populate filter <select> with appropriate operation options
+
+MIDDLEWARE
+1. ModelStep endpoint should return input, transform, and output
+2. input and output should have associated columns/vertices and their datatyp
+3. serve dictionary of datatyps and the applicable filter operations (ints can be <, >, = etc.)
