@@ -12,6 +12,7 @@ class MotifBuilder extends Component {
     this.addFilter = this.addFilter.bind(this)
     this.changeType = this.changeType.bind(this)
     this.deleteNode = this.deleteNode.bind(this)
+    this.deleteEdge = this.deleteEdge.bind(this)
     this.updateFilter = this.updateFilter.bind(this)
     this.addFilter = this.addFilter.bind(this)
     this.state = {
@@ -141,75 +142,9 @@ class MotifBuilder extends Component {
 
 
     const avail = ((this.state.generateScala) ? `disabled` : null);
+
+
     // TODO: refactor <select> elements into http://furqanzafar.github.io/react-selectize/#/
-    // TODO: move listOfNodes and listOfEdges into Sidebar
-
-    const listOfEdges = this.state.edges.map(x =>
-      <div className="cell small-12 entity" key={x.id}>
-        <div className="grid-x">
-          <div className="cell small-3">
-            <select
-              disabled={avail}
-              onChange={e => this.changeType(x.id, {"from": e.target.value})}
-              value={x.from}>
-              {this.state.nodes.map((a, idx) =>
-                <option key={idx} value={a.id}>{a.id}</option>
-              )}
-            </select>
-          </div>
-          <div className="cell small-6">
-            <select
-              disabled={avail}
-              onChange={e => this.changeType(x.id, {"type": e.target.value})}
-              value={x.type}>
-              {this.state.edgeTypes.map((a, idx) =>
-                <option key={idx} value={a}>{a}</option>
-              )}
-            </select>
-          </div>
-          <div className="cell small-3">
-            <select
-              disabled={avail}
-              onChange={e => this.changeType(x.id, {"to": e.target.value})}
-              value={x.to}>
-              {this.state.nodes.map((a, idx) =>
-                <option key={idx} value={a.id}>{a.id}</option>
-              )}
-            </select>
-          </div>
-          <div className="cell small-12">
-            {<ul className="filters">
-                {x.filters.map((f, idx2) =>
-                  <li key={idx2}>
-                    <div className="grid-x" style={{position: "relative"}}>
-                      <button className="delete-filter">x</button>
-                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
-                        <div key={idx3} className="cell small-4">
-                          <select onChange={e => this.updateFilter(e, x.id, a)}>
-                            <option>{f[a]}</option>
-                            <option>Another option</option>
-                          </select>
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                )}
-              </ul>
-            }
-          </div>
-          <div className="cell small-12">
-            <button
-              className="button"
-              onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
-          </div>
-          <div className="delete">
-            <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
-          </div>
-        </div>
-      </div>
-    )
-
-
     return (
       <div className="grid-y small-grid-frame">
         <div className="cell small-auto small-cell-block-container">
@@ -217,14 +152,16 @@ class MotifBuilder extends Component {
             <div className="cell small-6 small-cell-block-y">
               <Sidebar
                 nodes={this.state.nodes}
+                edges={this.state.edges}
                 nodeTypes={this.state.nodeTypes}
-                listOfEdges={listOfEdges}
+                edgeTypes={this.state.edgeTypes}
                 addNode={this.addNode}
                 addEdge={this.addEdge}
                 genScal={this.genScal}
                 avail={avail}
                 changeType={this.changeType}
                 deleteNote={this.deleteNode}
+                deleteEdge={this.deleteEdge}
                 updateFilter={this.updateFilter}
                 addFilter={this.addFilter} />
             </div>

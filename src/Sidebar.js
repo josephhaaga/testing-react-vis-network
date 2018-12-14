@@ -48,7 +48,70 @@ class Sidebar extends Component {
       </div>
     )
 
-
+    const listOfEdges = this.props.edges.map(x =>
+      <div className="cell small-12 entity" key={x.id}>
+        <div className="grid-x">
+          <div className="cell small-3">
+            <select
+              disabled={this.props.avail}
+              onChange={e => this.changeType(x.id, {"from": e.target.value})}
+              value={x.from}>
+              {this.props.nodes.map((a, idx) =>
+                <option key={idx} value={a.id}>{a.id}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-6">
+            <select
+              disabled={this.props.avail}
+              onChange={e => this.changeType(x.id, {"type": e.target.value})}
+              value={x.type}>
+              {this.props.edgeTypes.map((a, idx) =>
+                <option key={idx} value={a}>{a}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-3">
+            <select
+              disabled={this.props.avail}
+              onChange={e => this.changeType(x.id, {"to": e.target.value})}
+              value={x.to}>
+              {this.props.nodes.map((a, idx) =>
+                <option key={idx} value={a.id}>{a.id}</option>
+              )}
+            </select>
+          </div>
+          <div className="cell small-12">
+            {<ul className="filters">
+                {x.filters.map((f, idx2) =>
+                  <li key={idx2}>
+                    <div className="grid-x" style={{position: "relative"}}>
+                      <button className="delete-filter">x</button>
+                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                        <div key={idx3} className="cell small-4">
+                          <select onChange={e => this.updateFilter(e, x.id, a)}>
+                            <option>{f[a]}</option>
+                            <option>Another option</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                )}
+              </ul>
+            }
+          </div>
+          <div className="cell small-12">
+            <button
+              className="button"
+              onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
+          </div>
+          <div className="delete">
+            <button disabled={this.props.avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
+          </div>
+        </div>
+      </div>
+    )
 
 
     return (
@@ -77,7 +140,7 @@ class Sidebar extends Component {
           </div>
           <div className="cell small-12">
             <div className="grid-x">
-              {this.props.listOfEdges}
+              {listOfEdges}
             </div>
           </div>
           <button
