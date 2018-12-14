@@ -42,7 +42,10 @@ class MotifBuilder extends Component {
 
   addNode(){
     let n = this.state.nodes
-    const newId = "v" + (Math.max(...n.map(x => parseInt(x.id.slice(1)))) + 1)
+    let newId = "v1"
+    if(n.length > 0){
+      newId = "v" + (Math.max(...n.map(x => parseInt(x.id.slice(1)))) + 1)
+    }
     n.push({id: newId, type: 'Vertex'})
     this.setState({nodes: n})
   }
@@ -50,7 +53,11 @@ class MotifBuilder extends Component {
   addEdge(){
     let e = this.state.edges
     // TODO: assign new ID if length of edges = 0
-    const newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
+    let newId = "e1"
+    console.log(e.length);
+    if(e.length > 0){
+      newId = "e" + (Math.max(...e.map(x => parseInt(x.id.slice(1)))) + 1)
+    }
     const f = this.state.nodes[0].id
     const t = this.state.nodes[0].id
     e.push({id: newId, type: "Edge", from: f, to: t})
@@ -64,8 +71,8 @@ class MotifBuilder extends Component {
   }
 
   deleteEdge(idToDel){
-    console.log("running deleteEdge on "+idToDel);
     const e = this.state.edges.filter(x => x.id !== idToDel)
+    console.log(e);
     this.setState({edges: e})
   }
 
@@ -168,11 +175,14 @@ class MotifBuilder extends Component {
     const Filters = props => {
       const data = props.data
       return (
-        <ul className="filter-list">
-          {data.filters.map((f, idx) =>
-            <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
-          )}
-        </ul>
+        (("filters" in data)
+          ? <ul className="filter-list">
+              {data.filters.map((f, idx) =>
+                <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
+              )}
+            </ul>
+          : null
+        )
       );
     };
 
@@ -203,7 +213,7 @@ class MotifBuilder extends Component {
                 genScal={this.genScal}
                 avail={avail}
                 changeType={this.changeType}
-                deleteNote={this.deleteNode}
+                deleteNode={this.deleteNode}
                 deleteEdge={this.deleteEdge}
                 updateFilter={this.updateFilter}
                 addFilter={this.addFilter}
