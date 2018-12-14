@@ -15,13 +15,13 @@ class MotifBuilder extends Component {
           {attribute: "name", dtype: "string", operation: "contains", value: "Haaga"},
           {attribute: "age", dtype: "int", operation: ">", value: 30},
         ]},
-        {id: 'v2', type: 'Vertex'},
-        {id: 'v3', type: 'Person'},
-        {id: 'v4', type: 'Vertex'},
+        {id: 'v2', type: 'Vertex', filters: []},
+        {id: 'v3', type: 'Person', filters: []},
+        {id: 'v4', type: 'Vertex', filters: []},
       ],
       edges: [
-        {id: 'e1', from: 'v1', to: 'v2', type: 'employed_by'},
-        {id: 'e2', from: 'v3', to: 'v2', type: 'Edge'},
+        {id: 'e1', from: 'v1', to: 'v2', type: 'employed_by', filters: []},
+        {id: 'e2', from: 'v3', to: 'v2', type: 'Edge', filters: []},
       ],
       // TODO: refactor to constrain options, adhering to Graph Triplets from API
       nodeTypes: ["Vertex", "Person", "Company"],
@@ -63,6 +63,7 @@ class MotifBuilder extends Component {
   }
 
   changeType(id, newType){
+    // TODO: refactor general method with classes (Node and Edge)
     if(id[0] === 'e'){
       const z = this.state.edges
       let p = z.map(x => {
@@ -90,6 +91,19 @@ class MotifBuilder extends Component {
 
   addFilter(id){
     console.log(id);
+    if(id[0] === 'e'){
+      let edges = this.state.edges
+      edges.filter(x => x.id === id)[0]['filters'].push({attribute: "", dtype: "", operation: "", value: ""})
+      this.setState({
+        edges: edges
+      })
+    }else if(id[0] === 'v'){
+      let vertices = this.state.nodes
+      vertices.filter(x => x.id === id)[0]['filters'].push({attribute: "", dtype: "", operation: "", value: ""})
+      this.setState({
+        nodes: vertices
+      })
+    }
   }
 
   updateFilter(a,b,d) {
@@ -105,14 +119,11 @@ class MotifBuilder extends Component {
     const Filters = props => {
       const data = props.data
       return (
-        (("filters" in data)
-          ? <ul className="filter-list">
+        <ul className="filter-list">
               {data.filters.map((f, idx) =>
                 <li key={idx}>{f.attribute + " " + f.operation + " " + f.value}</li>
               )}
-            </ul>
-          : null
-        )
+        </ul>
       );
     };
 
@@ -144,31 +155,29 @@ class MotifBuilder extends Component {
             <button className="delete" onClick={(e) => this.deleteNode(x.id)}>X</button>
           </div>
           <div className="cell small-12">
-            {(("filters" in x)
-              ? <ul className="filters">
-                  {x.filters.map((f, idx2) =>
-                    <li key={idx2}>
-                      <div className="grid-x" style={{position: "relative"}}>
-                        <button className="delete-filter">x</button>
-                        {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
-                          <div key={idx3} className="cell small-4">
-                            <select onChange={e => this.updateFilter(e, x.id, a)}>
-                              <option>{f[a]}</option>
-                              <option>Another option</option>
-                            </select>
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                  )}
-                </ul>
-              : null
-            )}
-            <div className="cell small-12">
-              <button
-                className="button"
-                onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
-            </div>
+            {<ul className="filters">
+                {x.filters.map((f, idx2) =>
+                  <li key={idx2}>
+                    <div className="grid-x" style={{position: "relative"}}>
+                      <button className="delete-filter">x</button>
+                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                        <div key={idx3} className="cell small-4">
+                          <select onChange={e => this.updateFilter(e, x.id, a)}>
+                            <option>{f[a]}</option>
+                            <option>Another option</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                )}
+              </ul>
+            }
+          </div>
+          <div className="cell small-12">
+            <button
+              className="button"
+              onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
           </div>
         </div>
       </div>
@@ -205,6 +214,31 @@ class MotifBuilder extends Component {
                 <option key={idx} value={a.id}>{a.id}</option>
               )}
             </select>
+          </div>
+          <div className="cell small-12">
+            {<ul className="filters">
+                {x.filters.map((f, idx2) =>
+                  <li key={idx2}>
+                    <div className="grid-x" style={{position: "relative"}}>
+                      <button className="delete-filter">x</button>
+                      {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                        <div key={idx3} className="cell small-4">
+                          <select onChange={e => this.updateFilter(e, x.id, a)}>
+                            <option>{f[a]}</option>
+                            <option>Another option</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                )}
+              </ul>
+            }
+          </div>
+          <div className="cell small-12">
+            <button
+              className="button"
+              onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
           </div>
           <div className="delete">
             <button disabled={avail} onClick={(e) => this.deleteEdge(x.id)}>X</button>
