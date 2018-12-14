@@ -30,7 +30,11 @@ class Sidebar extends Component {
                         >x</button>
                       {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
                         <div key={idx3} className="cell small-4">
-                          <select onChange={e => this.props.updateFilter(e, x.id, a)}>
+                          <select onChange={e => {
+                            let newFilter = f
+                            f[a] = e.target.value
+                            this.props.updateFilter(x.id, f, newFilter)
+                          }}>
                             <option>{f[a]}</option>
                             <option>Another option</option>
                           </select>

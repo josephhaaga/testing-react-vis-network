@@ -113,11 +113,36 @@ class MotifBuilder extends Component {
   }
 
   // TODO: Implement
-  updateFilter(a,b,d) {
-    console.log(a, b, d);
+  updateFilter(idOfElement, oldFilter, newFilter) {
+    if(idOfElement[0] === 'e'){
+      let edges = this.state.edges
+      const idxToChange = edges.map(x => x.id === idOfElement).indexOf(true)
+      const newFilters = edges[idxToChange]['filters'].map(x =>
+        ((x === oldFilter)
+          ? newFilter
+          : x
+        )
+      )
+      edges[idxToChange]['filters'] = newFilters
+      this.setState({
+        edges: edges
+      })
+    }else if(idOfElement[0] === 'v'){
+      let nodes = this.state.nodes
+      const idxToChange = nodes.map(x => x.id === idOfElement).indexOf(true)
+      const newFilters = nodes[idxToChange]['filters'].map(x =>
+        ((x === oldFilter)
+          ? newFilter
+          : x
+        )
+      )
+      nodes[idxToChange]['filters'] = newFilters
+      this.setState({
+        nodes: nodes
+      })
+    }
   }
 
-  // TODO: Implement
   deleteFilter(idOfElement, filter){
     if(idOfElement[0] === 'e'){
       let edges = this.state.edges
