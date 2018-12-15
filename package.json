@@ -2,12 +2,11 @@
   "name": "test-react-vis-network",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "http://joehaaga.xyz/testing-react-vis-network",
+  "homepage": "http://joehaaga.xyz/testing-react-vis-network",
   "dependencies": {
     "@lifeomic/react-vis-network": "^1.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-prism": "^4.3.2",
     "react-scripts": "2.1.1"
   },
   "scripts": {

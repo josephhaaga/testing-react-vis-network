@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Network } from '@lifeomic/react-vis-network';
-import { QueryGenerator } from './QueryGenerator';
 import { Sidebar } from './Sidebar';
 import { GraphEdge, GraphNode, Graph, g } from './GraphObjects';
 
@@ -26,7 +25,7 @@ class MotifBuilder extends Component {
         <div className="cell small-auto small-cell-block-container">
           <div className="grid-x grid-padding-x">
             <div className="cell small-6 small-cell-block-y">
-              
+
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
               <Network options={{'height':'380px'}}>
