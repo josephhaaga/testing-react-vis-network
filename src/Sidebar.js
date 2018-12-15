@@ -1,80 +1,97 @@
 import React, { Component } from 'react';
 
 class Sidebar extends Component {
+
   render() {
 
-    const listOfNodes = this.props.nodes.map((x, idx) =>
+    // TODO: refactor redundant nested calls to .getNodes()
+
+    const listOfNodes = this.props.graph.nodes.map((x, idx) =>
       <div className="cell small-12 entity" key={idx}>
         <div className="grid-x">
-          <div className="cell small-4">{x.id}</div>
+          <div className="cell small-4">{x.getId()}</div>
           <div className="cell small-4" style={{color: "red"}}>isa</div>
           <div className="cell small-4">
             <select
-              value={x.type}
-              disabled={this.props.avail}
-              onChange={(e)=>this.props.changeType(x.id, e)}>
+              value={x.getType()}
+              onChange={(e) => {
+                x.setType(e.target.value)
+                this.props.update()
+              }}>
               {this.props.nodeTypes.map((y, idx) =>
                 <option key={idx} value={y}>{y}</option>
               )}
             </select>
-            <button className="delete" onClick={(e) => this.props.deleteNode(x.id)}>X</button>
+            <button className="delete" onClick={(e) => {
+              this.props.graph.deleteNode(x.id)
+              this.props.update()
+            }}>X</button>
           </div>
           {(("filters" in x)
             ? <div className="cell small-12">
-                <ul className="filters">
-                  {x.filters.map((f, idx2) =>
-                    <li key={idx2}>
-                      <div className="grid-x" style={{position: "relative"}}>
-                        <button
-                          className="delete-filter"
-                          onClick={(e) => this.props.deleteFilter(x.id, f)}
-                          >x</button>
-                        {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
-                          <div key={idx3} className="cell small-4">
-                            <select onChange={e => {
-                              let newFilter = f
-                              f[a] = e.target.value
-                              this.props.updateFilter(x.id, f, newFilter)
-                            }}>
-                              <option>{f[a]}</option>
-                              <option>Another option</option>
-                            </select>
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                  )}
-                </ul>
+                {<ul className="filters">
+                    {x.filters.map((f, idx2) =>
+                      <li key={idx2}>
+                        <div className="grid-x" style={{position: "relative"}}>
+                          <button className="delete-filter">x</button>
+                          {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                            <div key={idx3} className="cell small-4">
+                              <select onChange={e => {
+                                  let f2 = f
+                                  f2[a] = e.target.value
+                                  x.updateFilter(f, f2)
+                                  this.props.update()
+                                }
+                              }>
+                                <option>{f[a]}</option>
+                                <option>Another option</option>
+                              </select>
+                            </div>
+                          )}
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                }
               </div>
             : null
           )}
           <div className="cell small-12">
             <button
               className="button"
-              onClick={(e) => this.props.addFilter(x.id)}>Add Filters</button>
+              onClick={(e) => {
+                x.addFilter()
+                this.props.update()
+              }}>Add Filters</button>
           </div>
         </div>
       </div>
     )
 
-    const listOfEdges = ((this.props.edges)
-      ? this.props.edges.map(x =>
-          <div className="cell small-12 entity" key={x.id}>
+    // TODO: refactor redundant nested calls to .getEdges()
+
+    const listOfEdges = ((this.props.graph.getEdges())
+      ? this.props.graph.getEdges().map(x =>
+          <div className="cell small-12 entity" key={x.getId()}>
             <div className="grid-x">
               <div className="cell small-3">
                 <select
-                  disabled={this.props.avail}
-                  onChange={e => this.changeType(x.id, {"from": e.target.value})}
+                  onChange={e => {
+                    x.setFrom(e.target.value)
+                    this.props.update()
+                  }}
                   value={x.from}>
-                  {this.props.nodes.map((a, idx) =>
-                    <option key={idx} value={a.id}>{a.id}</option>
+                  {this.props.graph.getNodes().map((a, idx) =>
+                    <option key={idx} value={a.getId()}>{a.getId()}</option>
                   )}
                 </select>
               </div>
               <div className="cell small-6">
                 <select
-                  disabled={this.props.avail}
-                  onChange={e => this.changeType(x.id, {"type": e.target.value})}
+                  onChange={e => {
+                    x.setType(e.target.value)
+                    this.props.update()
+                  }}
                   value={x.type}>
                   {this.props.edgeTypes.map((a, idx) =>
                     <option key={idx} value={a}>{a}</option>
@@ -83,11 +100,13 @@ class Sidebar extends Component {
               </div>
               <div className="cell small-3">
                 <select
-                  disabled={this.props.avail}
-                  onChange={e => this.changeType(x.id, {"to": e.target.value})}
-                  value={x.to}>
-                  {this.props.nodes.map((a, idx) =>
-                    <option key={idx} value={a.id}>{a.id}</option>
+                  onChange={e => {
+                    x.setTo(e.target.value)
+                    this.props.update()
+                  }}
+                  value={x.getTo()}>
+                  {this.props.graph.getNodes().map((a, idx) =>
+                    <option key={idx} value={a.getId()}>{a.getId()}</option>
                   )}
                 </select>
               </div>
@@ -100,7 +119,13 @@ class Sidebar extends Component {
                               <button className="delete-filter">x</button>
                               {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
                                 <div key={idx3} className="cell small-4">
-                                  <select onChange={e => this.updateFilter(e, x.id, a)}>
+                                  <select onChange={e => {
+                                      let f2 = f
+                                      f2[a] = e.target.value
+                                      x.updateFilter(f, f2)
+                                      this.props.update()
+                                    }
+                                  }>
                                     <option>{f[a]}</option>
                                     <option>Another option</option>
                                   </select>
@@ -117,10 +142,13 @@ class Sidebar extends Component {
               <div className="cell small-12">
                 <button
                   className="button"
-                  onClick={(e) => this.addFilter(x.id)}>Add Filters</button>
+                  onClick={(e) => {
+                    x.addFilter()
+                    this.props.update()
+                  }}>Add Filters</button>
               </div>
               <div className="delete">
-                <button disabled={this.props.avail} onClick={(e) => this.props.deleteEdge(x.id)}>X</button>
+
               </div>
             </div>
           </div>
@@ -137,7 +165,10 @@ class Sidebar extends Component {
           </div>
           <div className="cell small-6" style={{alignSelf: "flex-end", textAlign: "right"}}>
             <button className="button"
-              onClick={this.props.addNode}>+</button>
+              onClick={e => {
+                this.props.graph.addNode()
+                this.props.update()
+              }}>+</button>
           </div>
           <div className="cell small-12">
             <div className="grid-x">
@@ -151,16 +182,16 @@ class Sidebar extends Component {
           </div>
           <div className="cell small-6" style={{alignSelf: "flex-end", textAlign: "right"}}>
             <button className="button"
-             onClick={this.props.addEdge}>+</button>
+             onClick={e => {
+               this.props.graph.addEdge()
+               this.props.update()
+             }}>+</button>
           </div>
           <div className="cell small-12">
             <div className="grid-x">
               {listOfEdges}
             </div>
           </div>
-          <button
-            onClick={this.props.genScal}
-            className="button success">Generate Scala</button>
         </div>
       </div>
     )
