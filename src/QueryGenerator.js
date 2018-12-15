@@ -3,9 +3,9 @@ import { PrismCode } from "react-prism";
 
 class QueryGenerator extends Component {
   render(){
-    const srcs = this.props.edges.map(x => x.from)
-    const dsts = this.props.edges.map(x => x.to)
-    let allNodes = this.props.nodes.map(x => x.id)
+    const srcs = this.props.graph.edges.map(x => x.from.getId())
+    const dsts = this.props.graph.edges.map(x => x.to.getId())
+    let allNodes = this.props.graph.nodes.map(x => x.getId())
     const usedNodes = new Set([...new Set(srcs), ...new Set(dsts)])
     let difference = [...new Set(
       [...new Set(allNodes)].filter(x => !usedNodes.has(x)))];
