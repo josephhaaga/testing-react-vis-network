@@ -20,7 +20,7 @@ class Sidebar extends Component {
                 <option key={idx} value={y}>{y}</option>
               )}
             </select>
-            <button className="delete" onClick={(e) => {
+            <button className="delete" disabled={(idx===0) ? true : false} onClick={(e) => {
               this.props.graph.deleteNode(x.id)
               this.props.update()
             }}>X</button>

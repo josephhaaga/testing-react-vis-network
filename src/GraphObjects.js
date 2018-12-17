@@ -95,7 +95,9 @@ class Graph {
     this.nodes = this.nodes.filter(x => x.getId() !== a)
   }
   addEdge(){
-    this.edges.push(new GraphEdge('v'+(this.edges.length + 1), 'Edge'))
+    this.edgesAdded++;
+    const newId = this.edgesAdded;
+    this.edges.push(new GraphEdge('e'+newId, 'Edge', [], 'v1', 'v1'))
   }
   deleteEdge(a){
     this.edges = this.edges.filter(x => x.getId() !== a)
