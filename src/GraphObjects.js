@@ -80,8 +80,12 @@ class Graph {
     this.nodesAdded = this.nodes.length;
     this.edgesAdded = this.edges.length;
   }
-  getNodes(){return this.nodes}
-  getEdges(){return this.edges}
+  getNodes(){
+    return this.nodes
+  }
+  getEdges(){
+    return this.edges
+  }
   addNode(){
     this.nodesAdded++;
     const newId = this.nodesAdded;
@@ -92,13 +96,19 @@ class Graph {
       (x.getFrom() === a || x.getTo() === a)
     )
     edgesToDelete.map(x => this.deleteEdge(x.getId()))
-    this.nodes = this.nodes.filter(x => x.getId() !== a)
+    this.nodes = this.nodes.filter(x =>
+      x.getId() !== a
+    )
   }
   addEdge(){
-    this.edges.push(new GraphEdge('v'+(this.edges.length + 1), 'Edge'))
+    this.edgesAdded++;
+    const newId = this.edgesAdded;
+    this.edges.push(new GraphEdge('e'+(newId), 'Edge'))
   }
   deleteEdge(a){
-    this.edges = this.edges.filter(x => x.getId() !== a)
+    this.edges = this.edges.filter(x =>
+      x.getId() !== a
+    )
   }
   render(){
     let a = this.nodes
