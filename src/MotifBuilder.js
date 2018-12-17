@@ -7,6 +7,7 @@ import { g, NetworkGraph } from './GraphObjects';
 class MotifBuilder extends Component {
   constructor(props){
     super(props)
+    this.submitMotif = this.submitMotif.bind(this)
     this.state = {
       g: g,
       // TODO: refactor to constrain options, adhering to Graph Triplets from API
@@ -18,7 +19,14 @@ class MotifBuilder extends Component {
       }
     }
   }
-
+  submitMotif(){
+    console.log("submitting");
+    const motif = {
+      nodes: this.state.g.getNodes(),
+      edges: this.state.g.getEdges()
+    }
+    this.props.submit(JSON.stringify(motif))
+  }
   render(){
     const update = () => {
       console.log("update called");
@@ -35,7 +43,8 @@ class MotifBuilder extends Component {
                 parent={this}
                 nodeTypes={this.state.nodeTypes}
                 edgeTypes={this.state.edgeTypes}
-                update={update} />
+                update={update}
+                submit={this.submitMotif} />
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
               <NetworkGraph nodes={g.getNodes()} edges={g.getEdges()} />

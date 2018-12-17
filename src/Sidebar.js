@@ -197,6 +197,10 @@ class Sidebar extends Component {
               {listOfEdges}
             </div>
           </div>
+          <div className="cell small-12">
+            <button className="button"
+              onClick={this.props.submit}>Submit</button>
+          </div>
         </div>
       </div>
     )
