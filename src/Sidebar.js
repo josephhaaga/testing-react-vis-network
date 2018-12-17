@@ -25,13 +25,17 @@ class Sidebar extends Component {
               this.props.update()
             }}>X</button>
           </div>
-          {(("filters" in x)
-            ? <div className="cell small-12">
+              <div className="cell small-12">
                 {<ul className="filters">
                     {x.filters.map((f, idx2) =>
                       <li key={idx2}>
                         <div className="grid-x" style={{position: "relative"}}>
-                          <button className="delete-filter">x</button>
+                          <button
+                            onClick={e => {
+                              x.deleteFilter(f)
+                              this.props.update()
+                            }}
+                            className="delete-filter">x</button>
                           {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
                             <div key={idx3} className="cell small-4">
                               <select onChange={e => {
@@ -52,8 +56,7 @@ class Sidebar extends Component {
                   </ul>
                 }
               </div>
-            : null
-          )}
+
           <div className="cell small-12">
             <button
               className="button"
@@ -110,35 +113,36 @@ class Sidebar extends Component {
                         )}
                       </select>
                     </div>
-                    {(("filters" in x)
-                      ? <div className="cell small-12">
-                          {<ul className="filters">
-                              {x.filters.map((f, idx2) =>
-                                <li key={idx2}>
-                                  <div className="grid-x" style={{position: "relative"}}>
-                                    <button className="delete-filter">x</button>
-                                    {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
-                                      <div key={idx3} className="cell small-4">
-                                        <select onChange={e => {
-                                            let f2 = f
-                                            f2[a] = e.target.value
-                                            x.updateFilter(f, f2)
-                                            this.props.update()
-                                          }
-                                        }>
-                                          <option>{f[a]}</option>
-                                          <option>Another option</option>
-                                        </select>
-                                      </div>
-                                    )}
+                    <div className="cell small-12">
+                      {<ul className="filters">
+                          {x.filters.map((f, idx2) =>
+                            <li key={idx2}>
+                              <div className="grid-x" style={{position: "relative"}}>
+                                <button className="delete-filter"
+                                  onClick={e => {
+                                    x.deleteFilter(f)
+                                    this.props.update()
+                                  }}>x</button>
+                                {Object.keys(f).filter(key => key !== "dtype").map((a, idx3) =>
+                                  <div key={idx3} className="cell small-4">
+                                    <select onChange={e => {
+                                        let f2 = f
+                                        f2[a] = e.target.value
+                                        x.updateFilter(f, f2)
+                                        this.props.update()
+                                      }
+                                    }>
+                                      <option>{f[a]}</option>
+                                      <option>Another option</option>
+                                    </select>
                                   </div>
-                                </li>
-                              )}
-                            </ul>
-                          }
-                        </div>
-                      : null
-                    )}
+                                )}
+                              </div>
+                            </li>
+                          )}
+                        </ul>
+                      }
+                    </div>
                     <div className="cell small-12">
                       <button
                         className="button"

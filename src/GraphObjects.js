@@ -124,11 +124,13 @@ class NetworkGraph extends Component {
     const nodes = this.props.nodes.map((x, idx) =>
       x.render(idx)
     )
-    // const edges = this.props.edges
-    // const edges = this.props.g.getNodes()
+    const edges = this.props.edges.map((x, idx) =>
+      x.render(idx)
+    )
     return(
       <Network options={{'height':'380px'}}>
         {nodes}
+        {edges}
       </Network>
     )
   }
