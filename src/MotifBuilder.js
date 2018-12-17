@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Network } from '@lifeomic/react-vis-network';
+// import { Network } from '@lifeomic/react-vis-network';
 import { Sidebar } from './Sidebar';
-import { g } from './GraphObjects';
+import { g, NetworkGraph } from './GraphObjects';
 
 
 class MotifBuilder extends Component {
@@ -21,9 +21,10 @@ class MotifBuilder extends Component {
 
   render(){
     const update = () => {
+      console.log("update called");
       this.setState({g: this.state.g})
     }
-    const graph = this.state.g.render()
+    const g = this.state.g
     return (
       <div className="grid-y small-grid-frame">
         <div className="cell small-auto small-cell-block-container">
@@ -37,9 +38,7 @@ class MotifBuilder extends Component {
                 update={update} />
             </div>
             <div className="cell small-6 small-cell-block-y" style={{background: 'lightgray'}}>
-              <Network options={{'height':'380px'}}>
-                {graph}
-              </Network>
+              <NetworkGraph nodes={g.getNodes()} edges={g.getEdges()} />
             </div>
           </div>
         </div>
