@@ -32,12 +32,8 @@ class GraphObject{
     this.filters = this.filters.filter(x => x !== oldF)
   }
 }
-
 class GraphNode extends GraphObject {
-  constructor(id, type, filters){
-    super(id, type, filters)
-  }
-  render(){
+  render(idx){
     const Filters = props => {
       return (
         <ul className="filter-list">
@@ -49,6 +45,7 @@ class GraphNode extends GraphObject {
     };
     return (
       <Node
+        key={idx}
         id={this.id}
         label={this.id+":"+this.type}
         decorator={Filters} />
@@ -65,9 +62,10 @@ class GraphEdge extends GraphObject {
   setFrom(from){this.from = from; console.log(from);}
   getTo(){return this.to}
   setTo(to){this.to = to}
-  render(){
+  render(idx){
     return (
       <Edge
+        key={idx}
         id={this.id}
         label={this.id+":"+this.type}
         from={this.from}
@@ -75,7 +73,6 @@ class GraphEdge extends GraphObject {
     )
   }
 }
-
 class Graph {
   constructor(nodes=[], edges=[]){
     this.nodes = nodes;
@@ -99,7 +96,7 @@ class Graph {
     let a = this.nodes
     a = a.concat(this.edges)
     return(
-      a.map(x => x.render())
+      a.map((x,idx) => x.render(idx))
     )
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Network, Node, Edge } from '@lifeomic/react-vis-network';
+import { Network } from '@lifeomic/react-vis-network';
 import { Sidebar } from './Sidebar';
 import { g } from './GraphObjects';
 
