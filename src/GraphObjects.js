@@ -1,5 +1,5 @@
-import React from 'react'
-import { Node, Edge } from '@lifeomic/react-vis-network';
+import React, { Component } from 'react'
+import { Network, Node, Edge } from '@lifeomic/react-vis-network';
 
 class GraphObject{
   constructor(id, type, filters=[]){
@@ -119,6 +119,22 @@ class Graph {
   }
 }
 
+class NetworkGraph extends Component {
+  render(){
+    const nodes = this.props.nodes.map((x, idx) =>
+      x.render(idx)
+    )
+    // const edges = this.props.edges
+    // const edges = this.props.g.getNodes()
+    return(
+      <Network options={{'height':'380px'}}>
+        {nodes}
+      </Network>
+    )
+  }
+}
+
+
 let g = new Graph([
   new GraphNode('v1', 'Vertex'),
   new GraphNode('v2', 'Vertex'),
@@ -127,4 +143,4 @@ let g = new Graph([
   new GraphEdge('e1', 'Edge', [], 'v1', 'v2')
 ])
 
-export { GraphNode, GraphEdge, g }
+export { GraphNode, GraphEdge, g, NetworkGraph }
