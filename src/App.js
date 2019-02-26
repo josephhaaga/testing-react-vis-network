@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Graph } from './Graph.js'
+import { MotifBuilder } from './MotifBuilder.js'
 
 class App extends Component {
+  handleSubmit(theQuery){
+    console.log("Motif pattern submitted:");
+    console.log(JSON.parse(theQuery));
+  }
   render() {
     return (
       <div className="App">
         <div>
-          <Graph />
+          <MotifBuilder submit={this.handleSubmit} />
         </div>
       </div>
     );
