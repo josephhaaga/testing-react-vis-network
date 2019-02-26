@@ -128,7 +128,7 @@ class NetworkGraph extends Component {
       x.render(idx)
     )
     return(
-      <Network options={{'height':'380px'}}>
+      <Network options={{'height':'500px'}}>
         {nodes}
         {edges}
       </Network>

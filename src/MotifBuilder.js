@@ -51,8 +51,8 @@ class MotifBuilder extends Component {
             </div>
           </div>
         </div>
-        <div className="cell shrink footer" style={{background: "black"}}>
-        </div>
+        {/* <div className="cell shrink footer" style={{background: "black"}}>
+        </div> */}
       </div>
     )
   }

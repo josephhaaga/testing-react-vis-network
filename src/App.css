@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.small-auto.small-cell-block-container > .grid-x.grid-padding-x {
+  height: 100vh;
+}
+
 .small-cell-block-y {
   position: relative;
 }
