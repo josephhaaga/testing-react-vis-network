@@ -11,8 +11,8 @@ class MotifBuilder extends Component {
     this.state = {
       g: g,
       // TODO: refactor to constrain options, adhering to Graph Triplets from API
-      nodeTypes: ["Vertex", "Person", "Company"],
-      edgeTypes: ["Edge", "employed_by", "claims_dependent"],
+      nodeTypes: ["Vertex", "DEVICE", "DEVICE_ID", "EFIN", "EIN", "IP", "PHONE", "PTIN", "RETURN", "RG", "TIN", "ZIP12"],
+      edgeTypes: ["Edge", "APPLIED_FOR", "DEP_OF", "EMPLOYED", "HAS_PHONE", "HAS_ZIP", "MFT55_XRF", "PARTNER_OF", "PRIOR_OF", "SHOLDER_OF", "SPOUSE_OF", "WORKED_FOR"],
       dataTypesAndOperations: {
         "string": ["contains", "equals"],
         "int": ["<", ">", "==", "<=", ">=", "!="]
