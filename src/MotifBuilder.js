@@ -25,6 +25,7 @@ class MotifBuilder extends Component {
       nodes: this.state.g.getNodes(),
       edges: this.state.g.getEdges()
     }
+    // POST to API here
     this.props.submit(JSON.stringify(motif))
   }
   render(){
