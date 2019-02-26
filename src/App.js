@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
 import './App.css';
-import { MotifBuilder } from './MotifBuilder.js'
+import { MotifBuilder } from './MotifBuilder.js';
+import { OperationChooser } from './OperationChooser.js';
 
 class App extends Component {
-  handleSubmit(theQuery){
+  constructor(props) {
+    super(props)
+    this.state = {}
+    this.handleOperationSelect = this.handleOperationSelect.bind(this)
+  }
+  handleOperationSelect(operation){
+    console.log("User chose: " + operation.name)
+    this.setState({
+      operation: operation
+    });
+  }
+  handleMotifSubmit(theQuery) {
     console.log("Motif pattern submitted:");
     console.log(JSON.parse(theQuery));
   }
   render() {
+    const screen = ((this.state.operation)
+      ? <MotifBuilder submit={this.handleMotifSubmit} /> 
+      : <OperationChooser select={this.handleOperationSelect} />
+    )
     return (
       <div className="App">
         <div>
-          <MotifBuilder submit={this.handleSubmit} />
+          {screen}
         </div>
       </div>
     );

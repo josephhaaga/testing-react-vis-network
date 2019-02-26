@@ -91,3 +91,17 @@ select:focus {
   top: 50%;
   transform: translate(0,-100%);
 }
+
+.operations-list ul {
+  list-style-type: none;
+}
+
+.operations-list button {
+  color: #1779ba;
+  cursor: pointer;
+}
+
+.operations-list button.disabled {
+  color: lightgray;
+  cursor: not-allowed;
+}
